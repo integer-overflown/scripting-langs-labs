@@ -25,6 +25,12 @@ class UserProfile
     }
 }
 
+// Current record of life duration
+// If user inputs more, it's either a mistake
+// or we should go grab Guinness' book to write his age down as a new record :)
+const MAX_ALLOWED_AGE_INPUT = 122;
+const MIN_ALLOWED_AGE_INPUT = 6;
+
 $products = [
     1 => new Product("Coffee", 10),
     2 => new Product("Cocoa", 7),
@@ -119,7 +125,55 @@ function startShoppingEntry(): void
     echo "Done shopping\n";
 }
 
+function setupProfile(): void
+{
+    global $userProfile;
+    $prompt = "profile> ";
+
+    echo "Please enter your name\n";
+    for (; ;) {
+        $userName = readline($prompt);
+
+        if ($userName === false) {
+            continue;
+        }
+
+        // check for blank and too short input
+        if (preg_match('/^\s*$/', $userName) > 0 || strlen($userName = trim($userName)) < 3) {
+            echo "Please enter a valid name at least 3 characters long\n";
+            continue;
+        }
+
+        break;
+    }
+
+    echo "Please enter your age\n";
+    for (; ;) {
+        $input = readline($prompt);
+
+        if ($input === false) {
+            continue;
+        }
+
+        $age = parseIntegerInput(trim($input), MIN_ALLOWED_AGE_INPUT, MAX_ALLOWED_AGE_INPUT);
+
+        if ($age === null) {
+            echo "Please enter a valid age in range [" . MIN_ALLOWED_AGE_INPUT . ", " . MAX_ALLOWED_AGE_INPUT . "]\n";
+            continue;
+        }
+
+        break;
+    }
+
+    $userProfile->userName = $userName;
+    $userProfile->age = $age;
+}
+
 echo "Hello, $userProfile->userName!\n";
+echo "Let's setup profile first\n";
+setupProfile();
+echo "I'll call you $userProfile->userName\n";
+
 echo "Here's the list of options, type an appropriate digit (in braces) to proceed with the action\n";
 
 $invalidInput = false;
@@ -147,6 +201,9 @@ do {
             startShoppingEntry();
             break;
         case "2":
+            echo "-- Profile settings --\n";
+            setupProfile();
+            break;
         case "3":
             $invalidInput = false;
             break; // TODO
