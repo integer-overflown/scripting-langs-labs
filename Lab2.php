@@ -80,10 +80,11 @@ function startShoppingEntry(): Status
 
     echo "Here's what we have:\n";
     foreach ($products as $num => $product) {
-        echo "$num) $product->name\n";
+        echo "$num) $product->name, \$$product->price per each\n";
     }
 
     echo "Choose any by typing a number of menu entry\n";
+    echo "You may add amount of products to take, such as: '1 10' to take 10 units of 1 product\n";
 
     for (; ;) {
         $input = readline("product> ");
