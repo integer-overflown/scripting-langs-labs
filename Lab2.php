@@ -28,6 +28,8 @@ do {
         shutdown();
     }
 
+    $option = trim($option);
+
     switch ($option) {
         case "0":
             shutdown();
