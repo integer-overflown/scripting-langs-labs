@@ -45,6 +45,7 @@ $products = [
 ];
 
 $userProfile = new UserProfile();
+$totalScore = 0.0;
 
 enum Status {
     case Success;
@@ -73,6 +74,8 @@ function startShoppingEntry(): Status
 {
     global $products;
     global $userProfile;
+    global $totalScore;
+
     $numProducts = count($products);
 
     echo "Here's what we have:\n";
@@ -125,6 +128,7 @@ function startShoppingEntry(): Status
         }
 
         echo "You've chosen '$chosenProduct->name' in amount of $productCount\n";
+        $totalScore += $chosenProduct->price * $productCount;
     }
 
     echo "Done shopping\n";
@@ -214,13 +218,18 @@ for (; ;) {
         case "1":
             echo "-- Start shopping --\n";
             $status = startShoppingEntry();
+            echo "--\n";
             break;
         case "2":
             echo "-- Profile settings --\n";
             $status = setupProfile();
+            echo "--\n";
             break;
         case "3":
-            break; // TODO
+            echo "-- Get the final score --\n";
+            echo "Your final score is: \$$totalScore\n";
+            echo "--\n";
+            break;
         default:
             echo "Unknown entry '$option', please enter a valid one in range [0-3]\n";
             break;
