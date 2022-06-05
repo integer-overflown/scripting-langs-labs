@@ -113,7 +113,7 @@ function startShoppingEntry(): Status
         }
 
         if (count($tokens) > 1) {
-            $productCount = parseIntegerInput($tokens[1], 1, $numProducts);
+            $productCount = parseIntegerInput($tokens[1], 1, PHP_INT_MAX);
 
             if ($productCount === null) {
                 echo "Please enter a valid product count, should be an integer larger than 1 (cannot recognize '" . $tokens[1] . "')\n";
