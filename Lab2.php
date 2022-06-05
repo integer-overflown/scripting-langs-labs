@@ -1,6 +1,41 @@
 <?php
 
-$products = [1 => "Coffee", 2 => "Cocoa", 3 => "Tea", 4 => "Cola", 5 => "Pepsi", 6 => "Sprite", 7 => "Juice"];
+class Product
+{
+    // Shorthand construct notation, new in PHP 8.0
+    public function __construct(public string $name,
+                                public float  $price,
+                                public int    $ageRestriction = 0)
+    {
+    }
+}
+
+class UserProfile
+{
+    public string $userName;
+    public int $age;
+
+    public function __construct(?string $userName = null, int $age = 0)
+    {
+        if ($userName === null) {
+            // request username from USER environment variable (is there on all *nix systems)
+            $this->userName = getenv("USER") ?: "unknown";
+        }
+        $this->age = $age;
+    }
+}
+
+$products = [
+    1 => new Product("Coffee", 10),
+    2 => new Product("Cocoa", 7),
+    3 => new Product("Tea", 5),
+    4 => new Product("Cola", 14),
+    5 => new Product("Pepsi", 15),
+    6 => new Product("Sprite", 12),
+    7 => new Product("Juice", 14)
+];
+
+$userProfile = new UserProfile();
 
 function shutdown(): void
 {
@@ -26,8 +61,8 @@ function startShoppingEntry(): void
     $numProducts = count($products);
 
     echo "Here's what we have:\n";
-    foreach ($products as $num => $name) {
-        echo "$num) $name\n";
+    foreach ($products as $num => $product) {
+        echo "$num) $product->name\n";
     }
 
     echo "Choose any by typing a number of menu entry\n";
@@ -39,7 +74,7 @@ function startShoppingEntry(): void
             break;
         }
 
-        $tokens = preg_split('/\s+/', $input, -1, PREG_SPLIT_NO_EMPTY);
+        $tokens = preg_split('/\s+/', $input, flags: PREG_SPLIT_NO_EMPTY);
 
         if (empty($tokens)) {
             echo "Please enter a number in range [1, $numProducts]\n";
@@ -69,19 +104,13 @@ function startShoppingEntry(): void
 
         $chosenProduct = $products[$productIndex];
 
-        echo "You've chosen '$chosenProduct' in amount of $productCount\n";
+        echo "You've chosen '$chosenProduct->name' in amount of $productCount\n";
     }
 
     echo "Done shopping\n";
 }
 
-$userName = getenv("USER"); // request username from USER environment variable (is there on all *nix systems)
-
-if (!$userName) {
-    $userName = "user";
-}
-
-echo "Hello, $userName!\n";
+echo "Hello, $userProfile->userName!\n";
 echo "Here's the list of options, type an appropriate digit (in braces) to proceed with the action\n";
 
 $invalidInput = false;
