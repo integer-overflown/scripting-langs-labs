@@ -46,6 +46,11 @@ $products = [
 
 $userProfile = new UserProfile();
 
+enum Status {
+    case Success;
+    case Interrupted;
+}
+
 function shutdown(): void
 {
     echo "Bye!\n";
@@ -64,7 +69,7 @@ function parseIntegerInput(string $input, int $rangeStart, $rangeEnd): ?int
     return $parsed;
 }
 
-function startShoppingEntry(): void
+function startShoppingEntry(): Status
 {
     global $products;
     global $userProfile;
@@ -81,7 +86,7 @@ function startShoppingEntry(): void
         $input = readline("product> ");
 
         if ($input === false) { // end-of-input
-            break;
+            return Status::Interrupted;
         }
 
         $tokens = preg_split('/\s+/', $input, flags: PREG_SPLIT_NO_EMPTY);
@@ -123,9 +128,10 @@ function startShoppingEntry(): void
     }
 
     echo "Done shopping\n";
+    return Status::Success;
 }
 
-function setupProfile(): void
+function setupProfile(): Status
 {
     global $userProfile;
     $prompt = "profile> ";
@@ -135,7 +141,7 @@ function setupProfile(): void
         $userName = readline($prompt);
 
         if ($userName === false) {
-            continue;
+            return Status::Interrupted;
         }
 
         // check for blank and too short input
@@ -152,7 +158,7 @@ function setupProfile(): void
         $input = readline($prompt);
 
         if ($input === false) {
-            continue;
+            return Status::Interrupted;
         }
 
         $age = parseIntegerInput(trim($input), MIN_ALLOWED_AGE_INPUT, MAX_ALLOWED_AGE_INPUT);
@@ -167,24 +173,33 @@ function setupProfile(): void
 
     $userProfile->userName = $userName;
     $userProfile->age = $age;
+
+    return Status::Success;
 }
 
 echo "Hello, $userProfile->userName!\n";
 echo "Let's setup profile first\n";
-setupProfile();
-echo "I'll call you $userProfile->userName\n";
 
+$status = setupProfile();
+
+if ($status != Status::Success) {
+    shutdown();
+}
+
+echo "I'll call you $userProfile->userName\n";
 echo "Here's the list of options, type an appropriate digit (in braces) to proceed with the action\n";
 
-$invalidInput = false;
+for (; ;) {
+    if ($status == Status::Interrupted) {
+        shutdown();
+    }
 
-do {
     echo "Start shopping (1)\n";
     echo "Profile settings (2)\n";
     echo "Get the final score (3)\n";
     echo "Exit the program (0 or Ctrl-D)\n";
 
-    $option = readline("> ");
+    $option = readline("menu> ");
 
     if (is_bool($option) && !$option) { // readline() return "false" if end-of-input occurred (triggered by Ctrl-D)
         shutdown();
@@ -198,18 +213,16 @@ do {
             break;
         case "1":
             echo "-- Start shopping --\n";
-            startShoppingEntry();
+            $status = startShoppingEntry();
             break;
         case "2":
             echo "-- Profile settings --\n";
-            setupProfile();
+            $status = setupProfile();
             break;
         case "3":
-            $invalidInput = false;
             break; // TODO
         default:
             echo "Unknown entry '$option', please enter a valid one in range [0-3]\n";
-            $invalidInput = true;
             break;
     }
-} while ($invalidInput);
+}
