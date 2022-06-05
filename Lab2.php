@@ -32,7 +32,10 @@ $products = [
     4 => new Product("Cola", 14),
     5 => new Product("Pepsi", 15),
     6 => new Product("Sprite", 12),
-    7 => new Product("Juice", 14)
+    7 => new Product("Juice", 14),
+    8 => new Product("Energy drink", 20, ageRestriction: 16),
+    9 => new Product("Beer", 25, ageRestriction: 18),
+    10 => new Product("Whiskey", 60, ageRestriction: 22)
 ];
 
 $userProfile = new UserProfile();
@@ -58,6 +61,7 @@ function parseIntegerInput(string $input, int $rangeStart, $rangeEnd): ?int
 function startShoppingEntry(): void
 {
     global $products;
+    global $userProfile;
     $numProducts = count($products);
 
     echo "Here's what we have:\n";
@@ -103,6 +107,11 @@ function startShoppingEntry(): void
         }
 
         $chosenProduct = $products[$productIndex];
+
+        if ($userProfile->age < $chosenProduct->ageRestriction) {
+            echo "Sorry, you cannot buy '$chosenProduct->name' yet: you must be $chosenProduct->ageRestriction+ years old, but you're only $userProfile->age\n";
+            continue;
+        }
 
         echo "You've chosen '$chosenProduct->name' in amount of $productCount\n";
     }
