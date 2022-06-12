@@ -47,7 +47,6 @@ class ProductReceipt
 
             // if none of the product were bought, we don't want to store a record in the receipt
             if ($chosenAmount === 0) {
-                error_log("$id empty");
                 continue;
             }
 
