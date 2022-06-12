@@ -1,16 +1,10 @@
 <?php
 
-require_once 'site_components.php';
-require_once 'data_store.php';
 require_once 'product.php';
-require_once 'page_template.php';
 
-$dataStore = new DataStore();
-$productView = new ProductDisplayList(array_map(function (ProductItem $product) {
-    return new ProductDisplayComponent($product);
-}, $dataStore->getAvailableProducts()));
-$productForm = new ProductPickUpForm($productView, StaticUiComponent::fromString('<input type="submit" value="Send" class="product-pick-up-form-submit-button">'));
+if (isset($_POST[POST_PARAM_PRODUCTS_PICK_UP])) {
+    header("Location: cart.php");
+    exit(0);
+}
 
-$siteView = new BasicSiteView(new SiteBody($productForm));
-
-echo $siteView->createHtmlView();
+require_once 'page_products.php';
