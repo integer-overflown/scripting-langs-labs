@@ -39,7 +39,8 @@ $footerComponents = [
     )
 ];
 
-class BasicSiteView implements UiComponent {
+class BasicSiteView implements UiComponent
+{
     public function __construct(
         private readonly UiComponent $body
     )

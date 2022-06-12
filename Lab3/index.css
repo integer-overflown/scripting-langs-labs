@@ -128,3 +128,27 @@
     font-weight: 400;
     width: 15%;
 }
+
+.purchase-receipt-table {
+    grid-column: 2;
+}
+
+.purchase-receipt-table, .purchase-receipt-table-row-header, .purchase-receipt-table-row-data {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.purchase-receipt-table-row-data, .purchase-receipt-table-row-header {
+    padding: 1em;
+}
+
+.purchase-empty-cart-placeholder {
+    grid-column: 2;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.purchase-empty-cart-placeholder > a, .purchase-empty-cart-placeholder > p {
+    text-align: center;
+}

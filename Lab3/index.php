@@ -3,7 +3,9 @@
 require_once 'product.php';
 require_once 'product_receipt.php';
 
-session_start();
+if (empty(session_id())) {
+    session_start();
+}
 
 if (isset($_POST[POST_PARAM_PRODUCTS_PICK_UP])) {
     $receipt = ProductReceipt::parseRequest($_POST[POST_PARAM_PRODUCTS_PICK_UP]);

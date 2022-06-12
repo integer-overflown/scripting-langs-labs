@@ -14,13 +14,15 @@ class ProductReceiptEntry
 
 class ProductReceipt
 {
+    const SESSION_KEY_PRODUCT_RECEIPT = 'PRODUCT_RECEIPT';
+
     private function __construct(
         public readonly array $itemsBought,
     )
     {
     }
 
-    static function parseRequest(array $userRequest): ?ProductReceipt
+    public static function parseRequest(array $userRequest): ?ProductReceipt
     {
         $dataStore = new DataStore();
         $itemsBought = [];
@@ -47,5 +49,15 @@ class ProductReceipt
         }
 
         return new ProductReceipt($itemsBought);
+    }
+
+    public static function getSessionReceipt(): ?ProductReceipt
+    {
+        return array_key_exists(static::SESSION_KEY_PRODUCT_RECEIPT, $_SESSION) ? $_SESSION[static::SESSION_KEY_PRODUCT_RECEIPT] : null;
+    }
+
+    public static function setSessionReceipt(ProductReceipt $receipt): void
+    {
+        $_SESSION[static::SESSION_KEY_PRODUCT_RECEIPT] = $receipt;
     }
 }
