@@ -54,7 +54,8 @@ $placeholder = StaticUiComponent::fromString(
 );
 
 $sessionReceipt = ProductReceipt::getSessionReceipt();
-$bodyComponent = $sessionReceipt === null ? $placeholder : new PurchaseReceiptTable($sessionReceipt);
+$haveContent = ($sessionReceipt !== null && count($sessionReceipt->itemsBought) > 0);
+$bodyComponent = $haveContent ? new PurchaseReceiptTable($sessionReceipt) : $placeholder;
 
 $page = new BasicSiteView(new SiteBody($bodyComponent));
 
