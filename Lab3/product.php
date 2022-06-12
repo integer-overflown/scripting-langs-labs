@@ -71,7 +71,7 @@ class ProductPickUpForm implements UiComponent
 
     public function createHtmlView(): string
     {
-        return '<form method="POST" class="product-pick-up-form"><div class="product-pick-up-form-contents">' . $this->productDisplayList->createHtmlView() . $this->submitButton->createHtmlView() . '</div></form>';
+        return '<form method="POST" action="index.php" class="product-pick-up-form"><div class="product-pick-up-form-contents">' . $this->productDisplayList->createHtmlView() . $this->submitButton->createHtmlView() . '</div></form>';
     }
 
 }
