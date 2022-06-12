@@ -139,3 +139,26 @@ class SiteBody implements UiComponent
             '</div></body>';
     }
 }
+
+class StaticUiComponent implements UiComponent {
+    private function __construct(
+        private readonly string $contents
+    ) {
+    }
+
+    public static function fromString(string $contents) : UiComponent {
+        return new StaticUiComponent($contents);
+    }
+
+    public static function fromFile(string $path) : UiComponent {
+        if (!file_exists($path)) {
+            trigger_error("$path doesn't exist", E_ERROR);
+        }
+        return new StaticUiComponent(file_get_contents($path));
+    }
+
+    public function createHtmlView(): string
+    {
+        return $this->contents;
+    }
+}
