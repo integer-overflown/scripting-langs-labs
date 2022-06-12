@@ -2,7 +2,7 @@
 
 interface UiComponent
 {
-    function createHtmlView(): string;
+    public function createHtmlView(): string;
 }
 
 class SiteHeaderComponent implements UiComponent
@@ -112,12 +112,30 @@ class SiteView implements UiComponent
     {
     }
 
-    function createHtmlView(): string
+    public function createHtmlView(): string
     {
         $head = file_get_contents('head.html');
         assert($head !== false, "Unable to read HTML head");
         return '<html lang="en">' . $head .
             '<body>' . $this->headerComponent->createHtmlView() . $this->siteBody->createHtmlView() . $this->footerComponent->createHtmlView() .
             '</body>' . '</html>';
+    }
+}
+
+class SiteBody implements UiComponent
+{
+    public function __construct(
+        private readonly UiComponent $siteBody
+    )
+    {
+    }
+
+    public function createHtmlView(): string
+    {
+        return '<body><div class="page-body-view">'
+            .
+            $this->siteBody->createHtmlView()
+            .
+            '</div></body>';
     }
 }

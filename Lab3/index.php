@@ -1,6 +1,8 @@
 <?php
 
 require_once 'site_components.php';
+require_once 'data_store.php';
+require_once 'product.php';
 
 function getImagePath(string $imageBaseName, string $ext = "svg"): string
 {
@@ -37,17 +39,11 @@ $footerComponents = [
     )
 ];
 
-class DummyBody implements UiComponent
-{
-    function createHtmlView(): string
-    {
-        return '<div>
-            <h1>Nothing here yet, but stay tuned!</h1>
-        </div>';
-    }
+$dataStore = new DataStore();
+$productView = new ProductDisplayList(array_map(function (ProductItem $product) {
+    return new ProductDisplayComponent($product);
+}, $dataStore->getAvailableProducts()));
 
-}
-
-$siteView = new SiteView(new SiteHeader($headerComponents), new DummyBody(), new SiteFooter($footerComponents));
+$siteView = new SiteView(new SiteHeader($headerComponents), new SiteBody($productView), new SiteFooter($footerComponents));
 
 echo $siteView->createHtmlView();

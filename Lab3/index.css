@@ -88,3 +88,27 @@ html {
     width: 24px;
     height: 24px;
 }
+
+/* Page body styles */
+
+.page-body-view {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    padding: 1.5em 0;
+}
+
+.product-list-container {
+    display: grid;
+    grid-column: 2;
+    grid-template-columns: 1fr 2fr 1fr;
+    row-gap: 1em;
+}
+
+.product-list-item-name, .product-list-item-price {
+    font-weight: 600;
+}
+
+.product-list-item-price {
+    text-align: end;
+}
+
