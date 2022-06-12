@@ -5,7 +5,7 @@ require_once 'data_store.php';
 class ProductReceiptEntry
 {
     public function __construct(
-        public readonly ProductItem $item,
+        public readonly ProductItem $productItem,
         public readonly int         $amount
     )
     {
@@ -35,6 +35,11 @@ class ProductReceipt
             if (!key_exists(POST_PARAM_PRODUCTS_CHOSEN_AMOUNT, $properties)
                 || ($chosenAmount = $properties[POST_PARAM_PRODUCTS_CHOSEN_AMOUNT]) < 0) {
                 return null;
+            }
+
+            // if none of the product were bought, we don't want to store a record in the receipt
+            if ($chosenAmount === 0) {
+                continue;
             }
 
             // Freaky PHP syntax to push an item to array
