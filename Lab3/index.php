@@ -43,7 +43,8 @@ $dataStore = new DataStore();
 $productView = new ProductDisplayList(array_map(function (ProductItem $product) {
     return new ProductDisplayComponent($product);
 }, $dataStore->getAvailableProducts()));
+$productForm = new ProductPickUpForm($productView, StaticUiComponent::fromString('<input type="submit" value="Send" class="product-pick-up-form-submit-button">'));
 
-$siteView = new SiteView(new SiteHeader($headerComponents), new SiteBody($productView), new SiteFooter($footerComponents));
+$siteView = new SiteView(new SiteHeader($headerComponents), new SiteBody($productForm), new SiteFooter($footerComponents));
 
 echo $siteView->createHtmlView();

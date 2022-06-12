@@ -51,3 +51,20 @@ class ProductDisplayList implements UiComponent
     }
 
 }
+
+class ProductPickUpForm implements UiComponent
+{
+    public function __construct(
+        private readonly ProductDisplayList $productDisplayList,
+        private readonly UiComponent        $submitButton
+    )
+    {
+
+    }
+
+    public function createHtmlView(): string
+    {
+        return '<form class="product-pick-up-form"><div class="product-pick-up-form-contents">' . $this->productDisplayList->createHtmlView() . $this->submitButton->createHtmlView() . '</div></form>';
+    }
+
+}

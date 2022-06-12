@@ -1,6 +1,6 @@
 /* Page global style */
 
-html {
+* {
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -97,11 +97,15 @@ html {
     padding: 1.5em 0;
 }
 
+.product-pick-up-form {
+    grid-column: 2;
+}
+
 .product-list-container {
     display: grid;
-    grid-column: 2;
     grid-template-columns: 1fr 2fr 1fr;
     row-gap: 1em;
+    align-items: center;
 }
 
 .product-list-item-name, .product-list-item-price {
@@ -112,3 +116,15 @@ html {
     text-align: end;
 }
 
+.product-pick-up-form-contents {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2em;
+}
+
+.product-pick-up-form-submit-button {
+    align-self: flex-end;
+    padding: 0.6em 2em;
+    font-weight: 400;
+    width: 15%;
+}
