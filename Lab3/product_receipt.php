@@ -39,8 +39,15 @@ class ProductReceipt
                 return null;
             }
 
+            if (!is_numeric($chosenAmount)) {
+                return null;
+            }
+
+            $chosenAmount = intval($chosenAmount);
+
             // if none of the product were bought, we don't want to store a record in the receipt
             if ($chosenAmount === 0) {
+                error_log("$id empty");
                 continue;
             }
 
