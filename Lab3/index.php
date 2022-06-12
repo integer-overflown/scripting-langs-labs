@@ -13,7 +13,8 @@ if (isset($_POST[POST_PARAM_PRODUCTS_PICK_UP])) {
         // For now, don't care much about what exactly has gone wrong, just sent 'Bad request' back
         http_response_code(400);
     } else {
-        var_dump($receipt->itemsBought);
+        ProductReceipt::setSessionReceipt($receipt);
+        header('Location: page_cart.php');
     }
     exit;
 }
