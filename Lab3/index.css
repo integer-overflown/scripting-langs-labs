@@ -133,7 +133,7 @@
     grid-column: 2;
 }
 
-.purchase-receipt-table, .purchase-receipt-table-row-header, .purchase-receipt-table-row-data {
+.purchase-receipt-table, .purchase-receipt-table-row-header, .purchase-receipt-table-row-data, .purchase-receipt-table-row-data-centered {
     border: 1px solid black;
     border-collapse: collapse;
 }
@@ -151,4 +151,21 @@
 
 .purchase-empty-cart-placeholder > a, .purchase-empty-cart-placeholder > p {
     text-align: center;
+}
+
+.purchase-receipt-table-row-data-centered {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.purchase-receipt-table-delete-button {
+    width: 48px;
+    height: 48px;
+    padding: 4px;
+    align-self: center;
+}
+
+.purchase-receipt-table-delete-button-icon {
+    width: 24px;
+    height: 24px;
 }

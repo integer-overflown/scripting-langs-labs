@@ -17,7 +17,7 @@ class ProductReceipt
     const SESSION_KEY_PRODUCT_RECEIPT = 'PRODUCT_RECEIPT';
 
     private function __construct(
-        public readonly array $itemsBought,
+        public array $itemsBought,
     )
     {
     }
@@ -65,5 +65,17 @@ class ProductReceipt
     public static function setSessionReceipt(ProductReceipt $receipt): void
     {
         $_SESSION[static::SESSION_KEY_PRODUCT_RECEIPT] = $receipt;
+    }
+
+    public function removeProduct(int $id): void
+    {
+        $index = 0;
+        foreach ($this->itemsBought as $entry) {
+            if ($entry->productItem->id == $id) {
+                array_splice($this->itemsBought, $index, 1);
+                return;
+            }
+            $index++;
+        }
     }
 }
