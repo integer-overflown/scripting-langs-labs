@@ -14,6 +14,15 @@ class PurchaseReceiptTable implements UiComponent
 
     }
 
+    private function generateCells(array $cellData, string $cellCssClass = "purchase-receipt-table-row-data"): string
+    {
+        $html = '';
+        foreach ($cellData as $cellDatum) {
+            $html .= "<td class=\"$cellCssClass\">$cellDatum</td>";
+        }
+        return $html;
+    }
+
     public function createHtmlView(): string
     {
         $html = '<table class="purchase-receipt-table"><tbody><tr class="purchase-receipt-table-row">';
@@ -23,6 +32,8 @@ class PurchaseReceiptTable implements UiComponent
         }
 
         $html .= '</tr>';
+
+        $total = 0.0;
 
         foreach ($this->productReceipt->itemsBought as $productReceiptEntry) {
             $html .= '<tr class="purchase-receipt-table-row">';
@@ -35,14 +46,14 @@ class PurchaseReceiptTable implements UiComponent
                 <img class=\"purchase-receipt-table-delete-button-icon\" src=\"images/ic_trash.svg\" alt>
                 </button>";
 
-            foreach ([$product->id, $product->name, $product->price, $amount, $sum] as $rowData) {
-                $html .= "<td class=\"purchase-receipt-table-row-data\">$rowData</td>";
-            }
+            $total += $sum;
 
-            $html .= "<td class=\"purchase-receipt-table-row-data-centered\">$deleteButton</td>";
-
+            $html .= $this->generateCells([$product->id, $product->name, $product->price, $amount, $sum]);
+            $html .= $this->generateCells([$deleteButton], "purchase-receipt-table-row-data-centered");
             $html .= '</tr>';
         }
+
+        $html .= $this->generateCells(['Total', '', '', '', $total, '']);
 
         $html .= '</tbody></table>';
 
