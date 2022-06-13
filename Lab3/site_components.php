@@ -9,7 +9,8 @@ class SiteHeaderComponent implements UiComponent
 {
     public function __construct(
         private readonly string $name,
-        private readonly string $iconPath
+        private readonly string $iconPath,
+        private readonly string $route
     )
     {
         if (!file_exists($this->iconPath)) {
@@ -21,7 +22,7 @@ class SiteHeaderComponent implements UiComponent
     {
         return "<div class=\"site-header-section\">
                 <img src=\"$this->iconPath\" class=\"site-header-section-icon\" alt>
-                <span class=\"site-header-section-name\">$this->name</span>
+                <a class=\"site-header-section-name\" href=\"$this->route\">$this->name</a>
                 </div>";
     }
 

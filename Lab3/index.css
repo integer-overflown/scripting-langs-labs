@@ -34,6 +34,8 @@
 .site-header-section-name {
     font-size: 18pt;
     margin-left: 0.5em;
+    text-decoration: none;
+    color: black;
 }
 
 .site-header-section {

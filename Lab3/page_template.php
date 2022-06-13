@@ -12,15 +12,18 @@ function getImagePath(string $imageBaseName, string $ext = "svg"): string
 $headerComponents = [
     new SiteHeaderComponent(
         name: "Home",
-        iconPath: getImagePath("ic_home")
+        iconPath: getImagePath("ic_home"),
+        route: 'page_products.php'
     ),
     new SiteHeaderComponent(
         name: "Products",
-        iconPath: getImagePath("ic_products")
+        iconPath: getImagePath("ic_products"),
+        route: 'page_products.php'
     ),
     new SiteHeaderComponent(
         name: "Cart",
-        iconPath: getImagePath("ic_cart")
+        iconPath: getImagePath("ic_cart"),
+        route: 'page_cart.php'
     )
 ];
 
