@@ -171,3 +171,46 @@
     width: 24px;
     height: 24px;
 }
+
+/* Login page styling */
+
+.login-text-edit-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    justify-content: space-between;
+}
+
+.login-form-frame {
+    border: darkgrey 0.125em solid;
+    display: flex;
+    flex-direction: column;
+    left: 50%;
+    padding: 2.5em 4em;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 33.3%;
+}
+
+.login-text-edit-container-item {
+    font-size: 14pt;
+    padding: 0.75em 0.5em;
+}
+
+.login-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5em;
+}
+
+.login-submit-button {
+    padding: 0.5em 0.75em;
+    font-size: 14pt;
+    align-self: flex-end;
+    width: 33.3%;
+}
+
+.login-submit-button:hover {
+    cursor: pointer;
+}
