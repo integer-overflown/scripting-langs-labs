@@ -3,7 +3,7 @@
 require_once 'product.php';
 require_once 'product_receipt.php';
 
-if (empty(session_id())) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 

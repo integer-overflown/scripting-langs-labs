@@ -62,7 +62,7 @@ class PurchaseReceiptTable implements UiComponent
 
 }
 
-if (empty(session_id())) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
