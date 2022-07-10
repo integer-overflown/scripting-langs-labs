@@ -11,20 +11,40 @@ function getImagePath(string $imageBaseName, string $ext = "svg"): string
 }
 
 $headerComponents = [
-    new SiteHeaderComponent(
+    new BasicSiteHeaderComponent(
         name: "Home",
         iconPath: getImagePath("ic_home"),
         route: 'page_products.php'
     ),
-    new SiteHeaderComponent(
+    new BasicSiteHeaderComponent(
         name: "Products",
         iconPath: getImagePath("ic_products"),
         route: 'page_products.php'
     ),
-    new SiteHeaderComponent(
+    new BasicSiteHeaderComponent(
         name: "Cart",
         iconPath: getImagePath("ic_cart"),
         route: 'page_cart.php'
+    ),
+    new VolatileSiteHeaderComponent(
+        getNameFunction: function () {
+            return "Profile";
+        },
+        iconPath: getImagePath("ic_cart"), // TODO: change icon
+        route: 'page_cart.php', // TODO: change route
+        shouldShowFunction: function () {
+            return LoginInfo::fromSession() !== null;
+        }
+    ),
+    new VolatileSiteHeaderComponent(
+        getNameFunction: function () {
+            return LoginInfo::fromSession() === null ? "Login" : "Logout";
+        },
+        iconPath: getImagePath("login_icon"),
+        route: '',
+        shouldShowFunction: function () {
+            return true;
+        }
     )
 ];
 

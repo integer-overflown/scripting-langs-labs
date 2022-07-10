@@ -5,12 +5,18 @@ interface UiComponent
     public function createHtmlView(): string;
 }
 
-class SiteHeaderComponent implements UiComponent
+interface SiteHeaderComponent extends UiComponent
+{
+    public function isShown(): bool;
+}
+
+class VolatileSiteHeaderComponent implements SiteHeaderComponent
 {
     public function __construct(
-        private readonly string $name,
+        private readonly mixed  $getNameFunction,
         private readonly string $iconPath,
-        private readonly string $route
+        private readonly string $route,
+        private readonly mixed  $shouldShowFunction
     )
     {
         if (!file_exists($this->iconPath)) {
@@ -22,9 +28,49 @@ class SiteHeaderComponent implements UiComponent
     {
         return "<div class=\"site-header-section\">
                 <img src=\"$this->iconPath\" class=\"site-header-section-icon\" alt>
-                <a class=\"site-header-section-name\" href=\"$this->route\">$this->name</a>
+                <a class=\"site-header-section-name\" href=\"$this->route\">" . ($this->getNameFunction)() . "</a>
                 </div>";
     }
+
+    public function isShown(): bool
+    {
+        return ($this->shouldShowFunction)();
+    }
+
+}
+
+class BasicSiteHeaderComponent implements SiteHeaderComponent
+{
+    private readonly SiteHeaderComponent $actual;
+
+    public function __construct(
+        string $name,
+        string $iconPath,
+        string $route,
+        bool   $isShown = true
+    )
+    {
+        if (!file_exists($iconPath)) {
+            trigger_error("$iconPath doesn't exist", E_USER_WARNING);
+        }
+
+        $this->actual = new VolatileSiteHeaderComponent(function () use ($name) {
+            return $name;
+        }, $iconPath, $route, function () use ($isShown) {
+            return $isShown;
+        });
+    }
+
+    public function createHtmlView(): string
+    {
+        return $this->actual->createHtmlView();
+    }
+
+    public function isShown(): bool
+    {
+        return $this->actual->isShown();
+    }
+
 
 }
 
@@ -38,19 +84,27 @@ class SiteHeader implements UiComponent
 
     public function createHtmlView(): string
     {
+        $separators = [];
+
+        foreach ($this->headerComponents as $headerComponent) {
+            if ($headerComponent->isShown()) {
+                $separators[] = '<span>|</span>';
+            }
+        }
+
         return '<header class="site-header">
         <div class="site-header-background-group">
         <div class="site-header-section-separators">'
             .
-            implode("\n", array_fill(0, count($this->headerComponents) - 1, "<span>|</span>"))
+            implode("\n", array_slice($separators, 0, count($separators) - 1))
             .
             '
         </div>
         <div class="site-header-section-container">
         '
             .
-            implode("\n", array_map(function (UiComponent $component) {
-                return $component->createHtmlView();
+            implode("\n", array_map(function (SiteHeaderComponent $component) {
+                return $component->isShown() ? $component->createHtmlView() : '';
             }, $this->headerComponents))
             .
             '</div></div></header>';
