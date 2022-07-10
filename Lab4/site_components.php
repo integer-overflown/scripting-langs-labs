@@ -76,6 +76,8 @@ class BasicSiteHeaderComponent implements SiteHeaderComponent
 
 class SiteHeader implements UiComponent
 {
+    private const SEPARATOR_ELEMENT = '<span>|</span>';
+
     public function __construct(
         public readonly array $headerComponents
     )
@@ -84,28 +86,20 @@ class SiteHeader implements UiComponent
 
     public function createHtmlView(): string
     {
-        $separators = [];
+        $shownComponents = [];
 
         foreach ($this->headerComponents as $headerComponent) {
             if ($headerComponent->isShown()) {
-                $separators[] = '<span>|</span>';
+                $shownComponents[] = $headerComponent->createHtmlView();
             }
         }
 
         return '<header class="site-header">
         <div class="site-header-background-group">
-        <div class="site-header-section-separators">'
-            .
-            implode("\n", array_slice($separators, 0, count($separators) - 1))
-            .
-            '
-        </div>
         <div class="site-header-section-container">
         '
             .
-            implode("\n", array_map(function (SiteHeaderComponent $component) {
-                return $component->isShown() ? $component->createHtmlView() : '';
-            }, $this->headerComponents))
+            implode("\n" . static::SEPARATOR_ELEMENT . "\n", $shownComponents)
             .
             '</div></div></header>';
     }
