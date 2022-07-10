@@ -79,7 +79,7 @@ function createBodyComponent(?ProductReceipt $sessionReceipt): UiComponent
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $page = new BasicSiteView(new SiteBody(createBodyComponent($sessionReceipt)));
+        $page = new BasicSiteView(new SiteBody(createBodyComponent($sessionReceipt)), LoginInfo::fromSession());
         echo $page->createHtmlView();
         break;
     case 'DELETE':

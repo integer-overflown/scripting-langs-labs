@@ -3,6 +3,7 @@
 require_once 'site_components.php';
 require_once 'data_store.php';
 require_once 'product.php';
+require_once 'model/login_info.php';
 
 function getImagePath(string $imageBaseName, string $ext = "svg"): string
 {
@@ -45,7 +46,8 @@ $footerComponents = [
 class BasicSiteView implements UiComponent
 {
     public function __construct(
-        private readonly UiComponent $body
+        private readonly UiComponent $body,
+        private readonly ?LoginInfo  $loginInfo
     )
     {
 
@@ -55,8 +57,15 @@ class BasicSiteView implements UiComponent
     {
         global $headerComponents;
         global $footerComponents;
-        $instance = new SiteView(new SiteHeader($headerComponents), $this->body, new SiteFooter($footerComponents));
+        $instance = new SiteView(new SiteHeader($headerComponents), $this->getBodyView(), new SiteFooter($footerComponents));
         return $instance->createHtmlView();
+    }
+
+    private function getBodyView(): UiComponent
+    {
+        return $this->loginInfo === null
+            ? StaticUiComponent::fromString('<body><p class="login-required-alert-message">Please login first</p></body>')
+            : $this->body;
     }
 
 }
