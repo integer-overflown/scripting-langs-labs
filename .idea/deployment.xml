@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="Local nginx server (Lab3)" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Local nginx server (Lab4)" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="Local nginx server (Lab3)">
+      <paths name="Local nginx server (Lab4)">
         <serverdata>
           <mappings>
-            <mapping deploy="." local="$PROJECT_DIR$/Lab3" web="/" />
+            <mapping deploy="." local="$PROJECT_DIR$/Lab4" web="/" />
           </mappings>
         </serverdata>
       </paths>
