@@ -11,14 +11,20 @@ if (session_status() === PHP_SESSION_NONE) {
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        if (LoginInfo::fromSession() === null) {
+        $loginInfo = LoginInfo::fromSession();
+        if ($loginInfo === null) {
             $file = file_get_contents('static/login.html');
             if ($file === false) {
                 trigger_error("Cannot find login page html", E_USER_ERROR);
             }
             echo $file;
         } else {
+            $loggedInTime = new DateTimeImmutable();
+            $loggedInTime->setTimestamp($loginInfo->getTimestamp());
+            error_log('Already logged in: login: \'' . $loginInfo->getLogin() . '\' at: ' . $loggedInTime->format(DateTimeInterface::ATOM));
+
             header("Location: index.php");
+            http_response_code(302);
         }
         break;
     case 'POST':
@@ -45,6 +51,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
             echo $error->toJson();
             break;
         }
+
+        $loginInfo = new LoginInfo($_POST['login']);
+        $loginInfo->writeToSession();
 
         header('Location: index.php');
         http_response_code(302);
