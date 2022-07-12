@@ -5,6 +5,10 @@ require_once 'data_store.php';
 require_once 'page_template.php';
 require_once 'model/login_info.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $dataStore = new DataStore();
 $productView = new ProductDisplayList(array_map(function (ProductItem $product) {
     return new ProductDisplayComponent($product);

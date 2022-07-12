@@ -5,7 +5,7 @@ require_once 'site_components.php';
 require_once 'model/login_error.php';
 require_once 'model/login_info.php';
 
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
