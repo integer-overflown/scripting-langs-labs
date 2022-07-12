@@ -41,7 +41,7 @@ $headerComponents = [
             return LoginInfo::fromSession() === null ? "Login" : "Logout";
         },
         iconPath: getImagePath("login_icon"),
-        route: '',
+        route: 'page_login.php',
         shouldShowFunction: function () {
             return true;
         }

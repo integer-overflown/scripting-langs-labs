@@ -35,4 +35,9 @@ class DataStore
         }
         return $productsTable[$id];
     }
+
+    public function getRegisteredCredentials(): array
+    {
+        return [['test', 'qwerty123'], ['user', 'password']];
+    }
 }
