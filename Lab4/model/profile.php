@@ -2,8 +2,8 @@
 
 class Profile
 {
-    public const MIN_NAME_LENGTH = 1;
-    public const MIN_SURNAME_LENGTH = 1;
+    public const NAME_PATTERN = '\w{1,}';
+    public const SURNAME_PATTERN = '\w{1,}';
     public const MIN_ALLOWED_AGE = 16;
     public const KEY_NAME = 'name';
     public const KEY_SURNAME = 'surname';

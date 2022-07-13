@@ -1,29 +1,40 @@
+<?php
+require_once 'model/profile.php'
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Profile - Lab4</title>
-    <link rel="stylesheet" href="../index.css" type="text/css">
+    <link rel="stylesheet" href="index.css" type="text/css">
+    <script src="scripts/profile.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="profile-settings-content">
     <div class="profile-upload-photo-section">
-        <img class="profile-settings-photo" src="../images/ic_placeholder.svg" alt="Profile icon placeholder">
+        <img class="profile-settings-photo" src="images/ic_placeholder.svg" alt="Profile icon placeholder">
         <button class="profile-settings-upload-button">Upload</button>
     </div>
     <div class="profile-setup-section">
         <div class="profile-setup-personal-info">
             <div class="profile-setup-personal-info-component">
                 <label class="profile-setup-personal-info-component-label" for="nameInput">Name</label>
-                <input id="nameInput" type="text" minlength="1">
+                <input class="profile-setup-settings-key" id="nameInput" type="text"
+                       pattern="<?= Profile::NAME_PATTERN ?>" data-profile-key="<?= Profile::KEY_NAME ?>" required>
             </div>
             <div class="profile-setup-personal-info-component">
                 <label class="profile-setup-personal-info-component-label" for="surnameInput">Surname</label>
-                <input id="surnameInput" type="text" minlength="1">
+                <input class="profile-setup-settings-key" id="surnameInput" type="text"
+                       pattern="<?= Profile::SURNAME_PATTERN ?>" data-profile-key="<?= Profile::KEY_SURNAME ?>"
+                       required>
             </div>
             <div class="profile-setup-personal-info-component">
-                <label class="profile-setup-personal-info-component-label" for="birthDateInput">Date of Birth</label>
-                <input id="birthDateInput" type="date">
+                <label class="profile-setup-personal-info-component-label" for="birthDateInput">
+                    Date of Birth
+                </label>
+                <input class="profile-setup-settings-key" id="birthDateInput" type="date" max="<?=
+                date('Y-m-d', strtotime('-' . Profile::MIN_ALLOWED_AGE . ' years'))
+                ?>" data-profile-key="<?= Profile::KEY_BIRTH_DATE ?>" required>
             </div>
         </div>
         <div class="profile-setup-brief-description">
@@ -64,9 +75,8 @@
                 leo, non tristique ipsum.</p>
         </div>
         <div class="profile-setup-actions-row">
-            <button class="profile-settings-submit-button" type="submit">Save</button>
+            <button class="profile-settings-submit-button" onclick="updateProfileSettings()" type="submit">Save</button>
         </div>
     </div>
-</div>
 </body>
 </html>
