@@ -213,3 +213,63 @@
     font-size: 24pt;
     font-weight: bold;
 }
+
+.profile-settings-content {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em 1em;
+    gap: 2em;
+}
+
+.profile-setup-section {
+    flex: 3 1 0;
+}
+
+.profile-setup-personal-info {
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+.profile-setup-personal-info-component {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 0.6em;
+}
+
+.profile-setup-personal-info-component-label {
+    text-decoration: underline;
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.profile-settings-submit-button {
+    padding: 0.25em 2em;
+    font-size: 14pt;
+}
+
+.profile-setup-actions-row {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.profile-upload-photo-section {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 48px;
+    min-height: 48px;
+    max-width: 256px;
+    gap: 2em;
+}
+
+.profile-settings-photo, .profile-settings-upload-button {
+    width: 100%;
+    align-self: center;
+}
+
+.profile-settings-upload-button {
+    padding: 0.25em 2em;
+    font-size: 14pt;
+}
