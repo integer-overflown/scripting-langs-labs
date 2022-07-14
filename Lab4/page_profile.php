@@ -7,13 +7,14 @@ require_once 'model/profile.php'
     <meta charset="UTF-8">
     <title>Profile - Lab4</title>
     <link rel="stylesheet" href="index.css" type="text/css">
-    <script src="scripts/profile.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="profile-settings-content">
     <div class="profile-upload-photo-section">
-        <img class="profile-settings-photo" src="images/ic_placeholder.svg" alt="Profile icon placeholder">
-        <button class="profile-settings-upload-button">Upload</button>
+        <img class="profile-settings-photo" id="profilePhotoPreview" src="images/ic_placeholder.svg"
+             alt="Profile icon placeholder">
+        <label for="profileUploadPhoto" class="profile-settings-upload-button">Upload</label>
+        <input style="display: none" type="file" id="profileUploadPhoto" name="image_uploads" accept="image/*">
     </div>
     <div class="profile-setup-section">
         <div class="profile-setup-personal-info">
@@ -78,5 +79,6 @@ require_once 'model/profile.php'
             <button class="profile-settings-submit-button" onclick="updateProfileSettings()" type="submit">Save</button>
         </div>
     </div>
+    <script src="scripts/profile.js" type="text/javascript"></script>
 </body>
 </html>
