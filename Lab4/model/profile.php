@@ -8,6 +8,8 @@ class Profile
     public const KEY_NAME = 'name';
     public const KEY_SURNAME = 'surname';
     public const KEY_BIRTH_DATE = 'birthDate';
+    public const PHOTO_TYPE_MIME = 'image/*';
+    public const KEY_PROFILE_PICTURE = 'picture';
 
     private string $name;
     private string $surname;
