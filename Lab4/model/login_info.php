@@ -15,7 +15,6 @@ class LoginInfo
 
     public static function fromSession(): ?LoginInfo
     {
-        error_log('session status: ' . session_status() . ' key exist: ' . array_key_exists(static::SESSION_KEY_LOGIN_INFO, $_SESSION));
         return session_status() !== PHP_SESSION_NONE && array_key_exists(static::SESSION_KEY_LOGIN_INFO, $_SESSION)
             ? unserialize($_SESSION[static::SESSION_KEY_LOGIN_INFO])
             : null;
