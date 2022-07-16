@@ -1,8 +1,16 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/site_components.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/page_template.php';
+
+global $headerComponents;
+global $footerComponents;
 
 $savedProfile = Profile::fromSession();
 $hasProfile = $savedProfile !== null;
+
+$siteHeader = new SiteHeader($headerComponents);
+$siteFooter = new SiteFooter($footerComponents);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +20,7 @@ $hasProfile = $savedProfile !== null;
     <link rel="stylesheet" href="index.css" type="text/css">
 </head>
 <body>
+<?= $siteHeader->createHtmlView() ?>
 <form action="page_profile.php" method="post" enctype="multipart/form-data">
     <div class="profile-settings-content">
         <div class="profile-upload-photo-section">
@@ -113,6 +122,7 @@ $hasProfile = $savedProfile !== null;
         </div>
     </div>
 </form>
+<?= $siteFooter->createHtmlView() ?>
 <script src="scripts/profile.js" type="text/javascript"></script>
 </body>
 </html>
