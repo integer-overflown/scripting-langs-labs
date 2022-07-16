@@ -30,8 +30,8 @@ $headerComponents = [
         getNameFunction: function () {
             return "Profile";
         },
-        iconPath: getImagePath("ic_cart"), // TODO: change icon
-        route: 'page_cart.php', // TODO: change route
+        iconPath: getImagePath("ic_profile"),
+        route: 'page_profile.php',
         shouldShowFunction: function () {
             return LoginInfo::fromSession() !== null;
         }
