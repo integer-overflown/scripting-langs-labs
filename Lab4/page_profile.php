@@ -10,6 +10,21 @@ function validateUploadFileName(string $name): bool
     return strlen($name) <= FILE_NAME_MAX_LEN && preg_match('/^[\da-zA-Z\-._]+$/i', $name) === 1;
 }
 
+function parseDateToUnixTimestamp(string $dateString): ?int
+{
+    try {
+        $date = new DateTimeImmutable($dateString);
+    } catch (Exception $e) {
+        error_log("Failed to parse '$dateString': " . $e->getMessage());
+        return null;
+    }
+    return $date->getTimestamp();
+}
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         require 'view/profile.php';
@@ -17,6 +32,29 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $profile = new Profile();
         $profile->fromKeyArray($_POST);
+
+        if (!(isset($_POST[Profile::KEY_NAME])
+            && isset($_POST[Profile::KEY_SURNAME])
+            && isset($_POST[Profile::KEY_BIRTH_DATE])
+        )) {
+            error_log('Invalid POST payload');
+            error_log(var_export($_POST, true));
+            http_response_code(400);
+            return;
+        }
+
+        $birthDate = parseDateToUnixTimestamp($_POST[Profile::KEY_BIRTH_DATE]);
+
+        if ($birthDate === null) {
+            error_log('Birth date ' . $_POST[Profile::KEY_BIRTH_DATE] . ' is not a valid date');
+            http_response_code(400);
+            return;
+        }
+
+        $profile
+            ->setName($_POST[Profile::KEY_NAME])
+            ->setSurname($_POST[Profile::KEY_SURNAME])
+            ->setBirthDate($birthDate);
 
         if (!$profile->isValid()) {
             error_log('Invalid profile payload in POST request');
@@ -26,8 +64,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
 
         $pictureInfo = $_FILES[Profile::KEY_PROFILE_PICTURE];
-
-        error_log(var_export($_FILES, true));
 
         // has upload succeeded?
         if ($pictureInfo['error'] != UPLOAD_ERR_OK) {
@@ -62,11 +98,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $processedFileName = basename($pictureInfo["name"]);
 
-        if (move_uploaded_file($tmpPath, FILE_UPLOAD_DIR . "/$processedFileName") === false) {
+        $destination = FILE_UPLOAD_DIR . "/$processedFileName";
+
+        if (move_uploaded_file($tmpPath, $destination) === false) {
             error_log("Failed to move file to upload dir: $processedFileName");
             http_response_code(500);
             return;
         }
+
+        $profile->setPicturePath($destination);
+        $profile->writeToSession();
 
         header("Location: index.php");
 

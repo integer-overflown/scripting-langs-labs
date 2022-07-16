@@ -23,7 +23,8 @@ class Profile
         return [
             static::KEY_NAME => $this->name,
             static::KEY_SURNAME => $this->surname,
-            static::KEY_BIRTH_DATE => $this->birthDate
+            static::KEY_BIRTH_DATE => $this->birthDate,
+            static::KEY_PROFILE_PICTURE => $this->picturePath
         ];
     }
 
@@ -32,9 +33,10 @@ class Profile
         $this->name = $data[static::KEY_NAME];
         $this->surname = $data[static::KEY_SURNAME];
         $this->birthDate = intval($data[static::KEY_BIRTH_DATE]);
+        $this->picturePath = $data[static::KEY_PROFILE_PICTURE];
     }
 
-    public static function fromSession(): ?LoginInfo
+    public static function fromSession(): ?Profile
     {
         return session_status() !== PHP_SESSION_NONE && array_key_exists(static::SESSION_KEY_PROFILE, $_SESSION)
             ? unserialize($_SESSION[static::SESSION_KEY_PROFILE])

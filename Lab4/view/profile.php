@@ -1,5 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php'
+require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php';
+
+$savedProfile = Profile::fromSession();
+$hasProfile = $savedProfile !== null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +15,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php'
 <form action="page_profile.php" method="post" enctype="multipart/form-data">
     <div class="profile-settings-content">
         <div class="profile-upload-photo-section">
-            <img class="profile-settings-photo" id="profilePhotoPreview" src="images/ic_placeholder.svg"
+            <img class="profile-settings-photo" id="profilePhotoPreview"
+                 src="<?= $hasProfile ? $savedProfile->getPicturePath() : 'images/ic_placeholder.svg' ?>"
                  alt="Profile icon placeholder">
             <label for="profileUploadPhoto" class="profile-settings-upload-button">Upload</label>
             <input style="display: none" type="file" id="profileUploadPhoto" name="<?= Profile::KEY_PROFILE_PICTURE ?>"
@@ -23,12 +27,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php'
                 <div class="profile-setup-personal-info-component">
                     <label class="profile-setup-personal-info-component-label" for="nameInput">Name</label>
                     <input class="profile-setup-settings-key" id="nameInput" type="text"
-                           pattern="<?= Profile::NAME_PATTERN ?>" name="<?= Profile::KEY_NAME ?>" required>
+                           pattern="<?= Profile::NAME_PATTERN ?>" name="<?= Profile::KEY_NAME ?>"
+                           value="<?= $hasProfile ? $savedProfile->getName() : '' ?>" required>
                 </div>
                 <div class="profile-setup-personal-info-component">
                     <label class="profile-setup-personal-info-component-label" for="surnameInput">Surname</label>
                     <input class="profile-setup-settings-key" id="surnameInput" type="text"
                            pattern="<?= Profile::SURNAME_PATTERN ?>" name="<?= Profile::KEY_SURNAME ?>"
+                           value="<?= $hasProfile ? $savedProfile->getSurname() : '' ?>"
                            required>
                 </div>
                 <div class="profile-setup-personal-info-component">
@@ -37,7 +43,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php'
                     </label>
                     <input class="profile-setup-settings-key" id="birthDateInput" type="date" max="<?=
                     date('Y-m-d', strtotime('-' . Profile::MIN_ALLOWED_AGE . ' years'))
-                    ?>" name="<?= Profile::KEY_BIRTH_DATE ?>" required>
+                    ?>" name="<?= Profile::KEY_BIRTH_DATE ?>"
+                           value="<?php
+                           if ($hasProfile) {
+                               $date = new DateTime();
+                               $date->setTimestamp($savedProfile->getBirthDate());
+                               echo $date->format("Y-m-d");
+                           }
+                           ?>"
+                           required>
                 </div>
             </div>
             <div class="profile-setup-brief-description">
