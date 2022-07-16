@@ -11,9 +11,12 @@ class Profile
     public const PHOTO_TYPE_MIME = 'image/*';
     public const KEY_PROFILE_PICTURE = 'picture';
 
+    private const SESSION_KEY_PROFILE = 'USER_PROFILE';
+
     private string $name;
     private string $surname;
     private int $birthDate;
+    private ?string $picturePath;
 
     public function __serialize(): array
     {
@@ -28,25 +31,29 @@ class Profile
     {
         $this->name = $data[static::KEY_NAME];
         $this->surname = $data[static::KEY_SURNAME];
-        $this->birthDate = $data[static::KEY_BIRTH_DATE];
+        $this->birthDate = intval($data[static::KEY_BIRTH_DATE]);
     }
 
-    public function toJson(): string
+    public static function fromSession(): ?LoginInfo
     {
-        return json_encode($this->__serialize());
+        return session_status() !== PHP_SESSION_NONE && array_key_exists(static::SESSION_KEY_PROFILE, $_SESSION)
+            ? unserialize($_SESSION[static::SESSION_KEY_PROFILE])
+            : null;
     }
 
-    public function fromJson(string $json): bool
+    public function writeToSession(): void
     {
-        $payload = json_decode($json, true);
+        $_SESSION[static::SESSION_KEY_PROFILE] = serialize($this);
+    }
 
-        if ($payload === null) {
-            return false;
-        }
+    public function fromKeyArray(array $keyArray): void
+    {
+        $this->__unserialize($keyArray);
+    }
 
-        $this->__unserialize($payload);
-
-        return false;
+    public function isValid(): bool
+    {
+        return !(empty($this->name) || empty($this->surname) || $this->birthDate <= 0);
     }
 
     public function getName(): string
@@ -79,6 +86,17 @@ class Profile
     public function setBirthDate(int $birthDate): Profile
     {
         $this->birthDate = $birthDate;
+        return $this;
+    }
+
+    public function getPicturePath(): ?string
+    {
+        return $this->picturePath;
+    }
+
+    public function setPicturePath(string $picturePath): Profile
+    {
+        $this->picturePath = $picturePath;
         return $this;
     }
 }
