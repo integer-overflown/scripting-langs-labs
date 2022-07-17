@@ -86,7 +86,7 @@ if (LoginInfo::fromSession() === null) {
                           name="<?= Profile::KEY_BRIEF_DESCRIPTION ?>"
                           placeholder="Enter brief description here&#x2026;"
                           required
-                ></textarea>
+                ><?= $hasProfile ? $savedProfile->getBriefDescription() : '' ?></textarea>
             </div>
             <div class="profile-setup-actions-row">
                 <button class="profile-settings-submit-button" type="submit">Save

@@ -22,6 +22,15 @@ class Profile
     private ?string $picturePath;
     private string $briefDescription;
 
+    public function __construct()
+    {
+        $this->name = '';
+        $this->surname = '';
+        $this->birthDate = 0;
+        $this->picturePath = null;
+        $this->briefDescription = '';
+    }
+
     public function __serialize(): array
     {
         return [
@@ -54,14 +63,9 @@ class Profile
         $_SESSION[static::SESSION_KEY_PROFILE] = serialize($this);
     }
 
-    public function fromKeyArray(array $keyArray): void
-    {
-        $this->__unserialize($keyArray);
-    }
-
     public function isValid(): bool
     {
-        return !(empty($this->name) || empty($this->surname) || $this->birthDate <= 0 || empty($this->briefDescription));
+        return !(empty($this->name) || empty($this->surname) || empty($this->briefDescription));
     }
 
     public function getName(): string

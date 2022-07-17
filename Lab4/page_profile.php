@@ -31,7 +31,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         $profile = new Profile();
-        $profile->fromKeyArray($_POST);
 
         if (!(isset($_POST[Profile::KEY_NAME])
             && isset($_POST[Profile::KEY_SURNAME])
