@@ -5,6 +5,7 @@ class Profile
     public const NAME_PATTERN = '\w{1,}';
     public const SURNAME_PATTERN = '\w{1,}';
     public const MIN_ALLOWED_AGE = 16;
+    public const MAX_ALLOWED_AGE = 122;
     public const KEY_NAME = 'name';
     public const KEY_SURNAME = 'surname';
     public const KEY_BIRTH_DATE = 'birthDate';

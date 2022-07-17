@@ -59,9 +59,14 @@ if (LoginInfo::fromSession() === null) {
                     <label class="profile-setup-personal-info-component-label" for="birthDateInput">
                         Date of Birth
                     </label>
-                    <input class="profile-setup-settings-key" id="birthDateInput" type="date" max="<?=
-                    date('Y-m-d', strtotime('-' . Profile::MIN_ALLOWED_AGE . ' years'))
-                    ?>" name="<?= Profile::KEY_BIRTH_DATE ?>"
+                    <input class="profile-setup-settings-key"
+                           id="birthDateInput"
+                           type="date"
+                           max="<?= date('Y-m-d', strtotime('-' . Profile::MIN_ALLOWED_AGE . ' years'))
+                           ?>"
+                           min="<?= date('Y-m-d', strtotime('-' . Profile::MAX_ALLOWED_AGE . ' years'))
+                           ?>"
+                           name="<?= Profile::KEY_BIRTH_DATE ?>"
                            value="<?php
                            if ($hasProfile) {
                                $date = new DateTime();
