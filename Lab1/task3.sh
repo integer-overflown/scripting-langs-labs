@@ -37,8 +37,10 @@ while [ -n "$1" ]; do
 done
 
 echo "Flags: ${debugFlags[*]}"
-set ${debugFlags[*]}
 
+if [ ${#debugFlags[@]} -gt 0 ]; then
+  set ${debugFlags[*]}
+fi
 
 # Now do something to demonstrate that 'set' command took effect
 
