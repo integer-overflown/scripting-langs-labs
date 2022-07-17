@@ -2,8 +2,8 @@
 
 class Profile
 {
-    public const NAME_PATTERN = '\w{1,}';
-    public const SURNAME_PATTERN = '\w{1,}';
+    public const NAME_PATTERN = '\w+';
+    public const SURNAME_PATTERN = '\w+';
     public const MIN_ALLOWED_AGE = 16;
     public const MAX_ALLOWED_AGE = 122;
     public const KEY_NAME = 'name';
@@ -65,7 +65,17 @@ class Profile
 
     public function isValid(): bool
     {
-        return !(empty($this->name) || empty($this->surname) || empty($this->briefDescription));
+        $now = new DateTime();
+        $then = new DateTime();
+        $then->setTimestamp($this->birthDate);
+
+        $sinceBirthDate = $now->diff($then);
+
+        return preg_match('/' . static::NAME_PATTERN . '/', $this->name) == 1
+            && preg_match('/' . static::SURNAME_PATTERN . '/', $this->surname) == 1
+            && static::MIN_ALLOWED_AGE <= $sinceBirthDate->y && $sinceBirthDate->y <= static::MAX_ALLOWED_AGE
+            && strlen($this->briefDescription) >= self::MIN_BRIEF_DESCRIPTION_LENGTH
+            && ($this->picturePath === null || file_exists($this->picturePath));
     }
 
     public function getName(): string
