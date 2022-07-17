@@ -222,7 +222,10 @@
 }
 
 .profile-setup-section {
+    display: flex;
+    flex-direction: column;
     flex: 3 1 0;
+    gap: 1em;
 }
 
 .profile-setup-personal-info {
@@ -235,13 +238,13 @@
     display: flex;
     flex: 1 1 0;
     flex-direction: column;
-    gap: 0.6em;
 }
 
 .profile-setup-personal-info-component-label {
     text-decoration: underline;
     color: dodgerblue;
     font-weight: bold;
+    margin-bottom: 0.6em;
 }
 
 .profile-settings-submit-button {
@@ -284,4 +287,14 @@
 
 .hidden-item {
     opacity: 0;
+}
+
+.profile-settings-brief-description-input {
+    width: 100%;
+    min-height: 8em;
+}
+
+.profile-setup-brief-description {
+    display: flex;
+    flex-direction: column;
 }

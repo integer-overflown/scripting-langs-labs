@@ -8,6 +8,8 @@ class Profile
     public const KEY_NAME = 'name';
     public const KEY_SURNAME = 'surname';
     public const KEY_BIRTH_DATE = 'birthDate';
+    public const KEY_BRIEF_DESCRIPTION = 'briefDescription';
+    public const MIN_BRIEF_DESCRIPTION_LENGTH = 50;
     public const PHOTO_TYPE_MIME = 'image/*';
     public const KEY_PROFILE_PICTURE = 'picture';
 
@@ -17,6 +19,7 @@ class Profile
     private string $surname;
     private int $birthDate;
     private ?string $picturePath;
+    private string $briefDescription;
 
     public function __serialize(): array
     {
@@ -24,7 +27,8 @@ class Profile
             static::KEY_NAME => $this->name,
             static::KEY_SURNAME => $this->surname,
             static::KEY_BIRTH_DATE => $this->birthDate,
-            static::KEY_PROFILE_PICTURE => $this->picturePath
+            static::KEY_PROFILE_PICTURE => $this->picturePath,
+            static::KEY_BRIEF_DESCRIPTION => $this->briefDescription
         ];
     }
 
@@ -34,6 +38,7 @@ class Profile
         $this->surname = $data[static::KEY_SURNAME];
         $this->birthDate = intval($data[static::KEY_BIRTH_DATE]);
         $this->picturePath = $data[static::KEY_PROFILE_PICTURE];
+        $this->briefDescription = $data[static::KEY_BRIEF_DESCRIPTION];
     }
 
     public static function fromSession(): ?Profile
@@ -55,7 +60,7 @@ class Profile
 
     public function isValid(): bool
     {
-        return !(empty($this->name) || empty($this->surname) || $this->birthDate <= 0);
+        return !(empty($this->name) || empty($this->surname) || $this->birthDate <= 0 || empty($this->briefDescription));
     }
 
     public function getName(): string
@@ -99,6 +104,17 @@ class Profile
     public function setPicturePath(string $picturePath): Profile
     {
         $this->picturePath = $picturePath;
+        return $this;
+    }
+
+    public function getBriefDescription(): string
+    {
+        return $this->briefDescription;
+    }
+
+    public function setBriefDescription(string $briefDescription): Profile
+    {
+        $this->briefDescription = $briefDescription;
         return $this;
     }
 }

@@ -36,6 +36,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (!(isset($_POST[Profile::KEY_NAME])
             && isset($_POST[Profile::KEY_SURNAME])
             && isset($_POST[Profile::KEY_BIRTH_DATE])
+            && isset($_POST[Profile::KEY_BRIEF_DESCRIPTION])
         )) {
             error_log('Invalid POST payload');
             error_log(var_export($_POST, true));
@@ -54,7 +55,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $profile
             ->setName($_POST[Profile::KEY_NAME])
             ->setSurname($_POST[Profile::KEY_SURNAME])
-            ->setBirthDate($birthDate);
+            ->setBirthDate($birthDate)
+            ->setBriefDescription($_POST[Profile::KEY_BRIEF_DESCRIPTION]);
 
         if (!$profile->isValid()) {
             error_log('Invalid profile payload in POST request');
