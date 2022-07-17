@@ -19,6 +19,7 @@ $siteFooter = new SiteFooter($footerComponents);
     <meta charset="UTF-8">
     <title>Profile - Lab4</title>
     <link rel="stylesheet" href="index.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 <?= $siteHeader->createHtmlView() ?>
