@@ -77,15 +77,7 @@ class BasicSiteView implements UiComponent
     {
         global $headerComponents;
         global $footerComponents;
-        $instance = new SiteView(new SiteHeader($headerComponents), $this->getBodyView(), new SiteFooter($footerComponents));
+        $instance = new SiteView(new SiteHeader($headerComponents), $this->body, new SiteFooter($footerComponents), $this->loginInfo);
         return $instance->createHtmlView();
     }
-
-    private function getBodyView(): UiComponent
-    {
-        return $this->loginInfo === null
-            ? StaticUiComponent::fromString('<body><p class="login-required-alert-message">Please login first</p></body>')
-            : $this->body;
-    }
-
 }

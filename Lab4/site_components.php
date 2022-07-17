@@ -156,7 +156,8 @@ class SiteView implements UiComponent
     public function __construct(
         private readonly UiComponent $headerComponent,
         private readonly UiComponent $siteBody,
-        private readonly UiComponent $footerComponent
+        private readonly UiComponent $footerComponent,
+        private readonly ?LoginInfo  $loginInfo
     )
     {
     }
@@ -166,8 +167,15 @@ class SiteView implements UiComponent
         $head = file_get_contents('head.html');
         assert($head !== false, "Unable to read HTML head");
         return '<html lang="en">' . $head .
-            '<body>' . $this->headerComponent->createHtmlView() . $this->siteBody->createHtmlView() . $this->footerComponent->createHtmlView() .
+            '<body>' . $this->headerComponent->createHtmlView() . $this->getBodyView()->createHtmlView() . $this->footerComponent->createHtmlView() .
             '</body>' . '</html>';
+    }
+
+    private function getBodyView(): UiComponent
+    {
+        return $this->loginInfo === null
+            ? StaticUiComponent::fromString('<body><p class="login-required-alert-message">Please login first</p></body>')
+            : $this->siteBody;
     }
 }
 
