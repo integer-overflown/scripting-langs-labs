@@ -1,6 +1,9 @@
 <?php
 
 require_once 'model/profile.php';
+require_once 'model/login_info.php';
+require_once 'site_components.php';
+require_once 'page_template.php';
 
 const FILE_UPLOAD_DIR = 'file_uploads';
 const FILE_NAME_MAX_LEN = 255;
@@ -27,6 +30,12 @@ if (session_status() == PHP_SESSION_NONE) {
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
+        if (LoginInfo::fromSession() === null) {
+            // site body component is ignored if user is not logged in (that is, prompt to log in is displayed instead)
+            $siteView = new BasicSiteView(StaticUiComponent::fromString(''), null);
+            echo $siteView->createHtmlView();
+            return;
+        }
         require 'view/profile.php';
         break;
     case 'POST':

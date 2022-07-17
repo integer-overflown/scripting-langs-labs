@@ -1,6 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/model/profile.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/model/login_info.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/site_components.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/page_template.php';
 
@@ -12,13 +11,6 @@ $hasProfile = $savedProfile !== null;
 
 $siteHeader = new SiteHeader($headerComponents);
 $siteFooter = new SiteFooter($footerComponents);
-
-if (LoginInfo::fromSession() === null) {
-    // site body component is ignored if user is not logged in (that is, prompt to log in is displayed instead)
-    $siteView = new SiteView($siteHeader, StaticUiComponent::fromString(''), $siteFooter, null);
-    echo $siteView->createHtmlView();
-    return;
-}
 
 ?>
 <!DOCTYPE html>
